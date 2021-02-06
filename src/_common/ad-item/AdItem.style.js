@@ -5,7 +5,6 @@ import { ReactComponent as NoImage } from "../../assets/svg/no-image.svg";
 export const StyledWrapper = styled.div`
   display: flex;
   gap: 20px;
-  max-height: 400px;
 `;
 
 export const StyledCardItem = styled.div`

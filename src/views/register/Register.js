@@ -10,10 +10,11 @@ import { StyledWrapper, StyledLogo } from "./Register.style";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRegister } from "../../api";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { BrowserRoutes } from "../../constants";
 
 export default function Register() {
+  const history = useHistory();
   const [hiddenPassword, setHiddenPassword] = useState(true);
   const [signup, { status: signupStatus, error: signupError }] = useRegister();
   const { register, handleSubmit, errors } = useForm();
@@ -31,7 +32,9 @@ export default function Register() {
         style={{ gap: "20px" }}
       >
         <Box textAlign="center">
-          <StyledLogo />
+          <StyledLogo
+            onClick={() => history.push(BrowserRoutes.Default.Home)}
+          />
         </Box>
         <Box display="flex">
           <TextField
