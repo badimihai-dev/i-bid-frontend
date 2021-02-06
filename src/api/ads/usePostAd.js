@@ -1,23 +1,24 @@
-import { useMutation } from "react-query";
-import { useHistory } from "react-router-dom";
-import { ApiKeys, BrowserRoutes } from "../../constants";
+import { useMutation, useQueryCache } from "react-query";
+import { ApiKeys, CacheKeys } from "../../constants";
 import { useAuth } from "../../store";
 import api from "../axios";
 
-const useLogin = () => {
-  const history = useHistory();
-  const { setProfile } = useAuth();
+const usePostAd = () => {
+  const { resetProfile } = useAuth();
+  const queryClient = useQueryCache();
 
   return useMutation(
     async (payload) => {
-      return api.post(ApiKeys.Auth.Login, payload);
+      return api.post(ApiKeys.Ads.Base, payload);
     },
     {
       onSuccess: async (response) => {
-        setProfile(response.data);
-        history.push(BrowserRoutes.Auth.Home);
+        queryClient.invalidateQueries(CacheKeys.Ads.Default);
       },
       onError: (error) => {
+        if (error.status === 403) {
+          resetProfile();
+        }
         /* Note: Possible specific error handler
            const { message } = error?.response?.data || {};
            const generalMessage =
@@ -30,4 +31,4 @@ const useLogin = () => {
     }
   );
 };
-export default useLogin;
+export default usePostAd;

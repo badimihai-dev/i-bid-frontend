@@ -9,7 +9,7 @@ import IsAuthRoutes from "./IsAuth";
 export default function Routes() {
   const history = useHistory();
   const [routes, setRoutes] = useState(DefaultRoutes);
-  const isLoggedIn = useAuth((state) => !!state.profile.token);
+  const isLoggedIn = useAuth((state) => !!state.profile?.token);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -30,7 +30,7 @@ export default function Routes() {
 }
 
 const NotFound = () => {
-  const isLoggedIn = useAuth((state) => !!state.profile.token);
+  const isLoggedIn = useAuth((state) => !!state.profile?.token);
   const history = useHistory();
 
   return (

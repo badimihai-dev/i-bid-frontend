@@ -6,10 +6,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { StyledWrapper } from "./Register.style";
+import { StyledWrapper, StyledLogo } from "./Register.style";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRegister } from "../../api";
+import { Link } from "react-router-dom";
+import { BrowserRoutes } from "../../constants";
 
 export default function Register() {
   const [hiddenPassword, setHiddenPassword] = useState(true);
@@ -19,7 +21,6 @@ export default function Register() {
   const onSubmit = (formData) => {
     signup(formData);
   };
-  console.dir(signupError)
 
   return (
     <StyledWrapper>
@@ -29,24 +30,29 @@ export default function Register() {
         flexDirection="column"
         style={{ gap: "20px" }}
       >
-        <TextField
-          helperText={errors.firstName?.message}
-          error={!!errors.firstName?.message}
-          name="firstName"
-          variant="outlined"
-          placeholder="Enter first name"
-          inputRef={register({ required: "Field is required" })}
-          label="First name"
-        />
-        <TextField
-          helperText={errors.lastName?.message}
-          error={!!errors.lastName?.message}
-          name="lastName"
-          variant="outlined"
-          placeholder="Enter last name"
-          inputRef={register({ required: "Field is required" })}
-          label="Last name"
-        />
+        <Box textAlign="center">
+          <StyledLogo />
+        </Box>
+        <Box display="flex">
+          <TextField
+            helperText={errors.firstName?.message}
+            error={!!errors.firstName?.message}
+            name="firstName"
+            variant="outlined"
+            placeholder="Enter first name"
+            inputRef={register({ required: "Field is required" })}
+            label="First name"
+          />
+          <TextField
+            helperText={errors.lastName?.message}
+            error={!!errors.lastName?.message}
+            name="lastName"
+            variant="outlined"
+            placeholder="Enter last name"
+            inputRef={register({ required: "Field is required" })}
+            label="Last name"
+          />
+        </Box>
         <TextField
           helperText={errors.email?.message}
           error={!!errors.email?.message}
@@ -89,6 +95,12 @@ export default function Register() {
             <Typography>Register</Typography>
           )}
         </Button>
+        <Box textAlign="center">
+          <Typography>
+            Already have an account? Go to{" "}
+            <Link to={BrowserRoutes.Default.Login}>sign in</Link>
+          </Typography>
+        </Box>
       </Box>
     </StyledWrapper>
   );
