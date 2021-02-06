@@ -7,16 +7,19 @@ import DefaultRoutes from "./Default";
 import IsAuthRoutes from "./IsAuth";
 
 export default function Routes() {
+  const history = useHistory();
   const [routes, setRoutes] = useState(DefaultRoutes);
-  const isLoggedIn = useAuth((state) => !!state.profile.id);
+  const isLoggedIn = useAuth((state) => !!state.profile.token);
 
   useEffect(() => {
     if (isLoggedIn) {
+      history.push(BrowserRoutes.Auth.Home);
       setRoutes(IsAuthRoutes);
     } else {
+      history.push(BrowserRoutes.Auth.Login);
       setRoutes(DefaultRoutes);
     }
-  }, [isLoggedIn, setRoutes]);
+  }, [isLoggedIn, history, setRoutes]);
 
   return (
     <Switch>
@@ -27,9 +30,7 @@ export default function Routes() {
 }
 
 const NotFound = () => {
-  const isLoggedIn = useAuth((state) => {
-    console.log(state);
-  });
+  const isLoggedIn = useAuth((state) => !!state.profile.token);
   const history = useHistory();
 
   return (

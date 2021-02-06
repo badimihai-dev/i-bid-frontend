@@ -1,16 +1,25 @@
-import { Box, Button, TextField, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import React from "react";
 import { StyledWrapper } from "./Register.style";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useRegister } from "../../api";
 
 export default function Register() {
   const [hiddenPassword, setHiddenPassword] = useState(true);
+  const [signup, { status: signupStatus, error: signupError }] = useRegister();
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = (formData) => {
-    console.log(formData);
+    signup(formData);
   };
+  console.dir(signupError)
 
   return (
     <StyledWrapper>
@@ -64,12 +73,21 @@ export default function Register() {
             }`}</Typography>
           </Button>
         </Box>
+        {signupError?.response?.data?.message && (
+          <Typography color="error">
+            {signupError.response.data.message}
+          </Typography>
+        )}
         <Button
           variant="outlined"
           style={{ margin: "auto" }}
           onClick={handleSubmit(onSubmit)}
         >
-          Register
+          {signupStatus === "loading" ? (
+            <CircularProgress />
+          ) : (
+            <Typography>Register</Typography>
+          )}
         </Button>
       </Box>
     </StyledWrapper>
